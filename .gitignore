@@ -1,0 +1,18 @@
+# Docs internos — não visíveis ao candidato
+QA-EVALUATOR-GUIDE.md
+QA-JOB-DESCRIPTION.md
+DEV-FULLSTACK-TECH-CHALLENGE.md
+
+# Env com credenciais reais
+app/.env
+
+# Node
+node_modules/
+**/node_modules/
+
+# Next.js build
+**/.next/
+
+# SQLite data
+*.db
+*.sqlite
