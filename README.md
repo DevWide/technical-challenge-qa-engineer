@@ -1,289 +1,158 @@
 # Sinky Technical Challenge — QA Engineer
 
-## Contexto
-
-Na Sinky, qualidade não é uma etapa no final do processo — é uma responsabilidade **distribuída, contínua e estratégica**. Como QA Engineer, você atua em todas as fases do ciclo de desenvolvimento: desde a revisão de requisitos, passando pela auditoria da aplicação, até a construção da malha de testes automatizados.
-
-Este desafio simula exatamente esse ciclo. Você receberá:
-
-1. Um **PRD** (Product Requirements Document) já escrito pelo time de produto
-2. Uma **aplicação funcional** desenvolvida com base nesse PRD
-3. A missão de garantir a qualidade em cada uma dessas camadas
+**Candidato:** Rafael Barbosa  
+**Data de entrega:** 2026-04-13
+**Repositório:** https://github.com/DevWide/technical-challenge-qa-engineer
 
 ---
 
-## A Aplicação: Smart To-Do List
+## Estrutura da entrega
 
-Uma lista de tarefas com integração de IA — o usuário descreve um objetivo (ex: "Lançar um produto") e a IA decompõe esse objetivo em subtarefas acionáveis, que são persistidas e gerenciadas pelo sistema.
+```
+repositório/
+├── app/                    ← aplicação original (não modificada)
+├── e2e/                    ← Fase 3: suíte Playwright E2E
+│   ├── pages/              ← Page Objects (POM)
+│   ├── fixtures/           ← fixtures e helpers de API
+│   ├── tests/              ← 5 spec files obrigatórios
+│   ├── playwright.config.ts
+│   ├── package.json
+│   └── README.md
+├── .github/
+│   └── workflows/
+│       └── playwright.yml  ← Bônus B2: CI com GitHub Actions
+├── PRD.md                  ← fornecido pela Sinky (não modificado)
+├── PRD-REVIEW.md           ← Fase 1: revisão de requisitos
+├── BUG-REPORT.md           ← Fase 2: bugs encontrados na auditoria
+├── TEST-STRATEGY.md        ← Fase 2: estratégia de testes
+└── README.md               ← este arquivo
+```
 
-### Stack
+---
 
-| Camada         | Tecnologia                                        |
-| -------------- | ------------------------------------------------- |
-| Frontend       | Next.js 14 (App Router) + TypeScript              |
-| Backend        | NestJS + TypeScript                               |
-| Banco de Dados | SQLite (via TypeORM)                              |
-| IA             | OpenRouter (`mistralai/mistral-7b-instruct:free`) |
-| Infra          | Docker Compose                                    |
+## Como rodar a aplicação
 
-### Como rodar (pré-requisito: Docker instalado)
+**Pré-requisitos:** Docker Desktop instalado e em execução
 
-\`\`\`bash
-git clone <URL_DO_REPOSITÓRIO>
-cd <nome-do-repositório>/app
-docker-compose up --build
-\`\`\`
+```bash
+git clone https://github.com/DevWide/technical-challenge-qa-engineer.git
+cd technical-challenge-qa-engineer/app
+docker compose up --build
+```
 
-| Serviço       | URL                            |
-| ------------- | ------------------------------ |
-| Aplicação     | http://localhost:3000          |
+| Serviço | URL |
+|---|---|
+| Aplicação (Frontend) | http://localhost:3000 |
 | API (Swagger) | http://localhost:3001/api/docs |
 
-> A feature de IA usa o modelo \`mistralai/mistral-7b-instruct:free\` via OpenRouter, que é **gratuito**. Crie uma chave em https://openrouter.ai/keys e insira na interface da aplicação.
+A feature de geração por IA requer uma API Key gratuita do OpenRouter. Crie uma em https://openrouter.ai/keys e insira no campo disponível na interface.
 
 ---
 
-## O Desafio
+## Como rodar os testes E2E
 
-O desafio é dividido em **3 fases sequenciais**. As fases refletem o ciclo real de atuação de um QA Engineer na Sinky.
+**Pré-requisitos:** aplicação rodando (passo acima) e Node.js 18+
 
----
-
-## Fase 1 — Revisão de PRD (25% da avaliação)
-
-Antes de qualquer linha de código existir, o QA deve atuar como guardião da qualidade nos requisitos.
-
-O arquivo \`PRD.md\` (na raiz deste repositório) é o documento de produto que guiou o desenvolvimento da aplicação. Seu trabalho nesta fase é analisá-lo **antes de olhar para a aplicação** e identificar tudo que pode causar problemas de qualidade.
-
-### Entregável: \`PRD-REVIEW.md\`
-
-Crie o arquivo \`PRD-REVIEW.md\` na raiz do seu repositório. Para cada problema identificado no PRD, utilize o template abaixo:
-
-\`\`\`markdown
-
-## [PRD-XXX] Título descritivo do problema
-
-**Requisito afetado:** RF-XX ou RNF
-**Categoria:** Ambiguidade | Requisito ausente | Critério de aceitação incompleto | Risco técnico | Segurança | Acessibilidade
-
-### Problema identificado
-
-[Descreva o que está errado, incompleto ou ambíguo no PRD]
-
-### Por que isso é um risco
-
-[Qual o impacto se isso for para produção sem ser tratado?]
-
-### Sugestão de melhoria
-
-[Como você reescreveria ou complementaria esse requisito?]
-\`\`\`
-
-> **Dica:** Analise não só o que está escrito, mas também o que **não está** escrito. Requisitos de qualidade muitas vezes vivem nas lacunas.
-
----
-
-## Fase 2 — Auditoria da Aplicação (30% da avaliação)
-
-Agora que você conhece os requisitos, é hora de colocar a aplicação à prova.
-
-Realize uma **sessão de testes exploratórios** cobrindo todas as funcionalidades — interface, API (\`/api/docs\`) e comportamentos de borda. Documente tudo que encontrar.
-
-### Entregáveis
-
-#### \`BUG-REPORT.md\`
-
-Para cada defeito encontrado, use o template:
-
-\`\`\`markdown
-
-## [BUG-XXX] Título descritivo e objetivo
-
-**Severidade:** Crítica | Alta | Média | Baixa
-**Prioridade:** P1 | P2 | P3 | P4
-**Componente:** Frontend | Backend | API | UX | Acessibilidade | Segurança
-
-### Descrição
-
-[O que acontece de errado e por que é um problema]
-
-### Passos para Reproduzir
-
-1. ...
-2. ...
-3. ...
-
-### Resultado Esperado
-
-[O que deveria acontecer]
-
-### Resultado Obtido
-
-[O que realmente acontece]
-
-### Evidência
-
-[Screenshot, vídeo, log de console ou resposta de API]
-
-### Sugestão de Correção
-
-[Opcional, mas valorizado]
-\`\`\`
-
-#### \`TEST-STRATEGY.md\`
-
-Um documento estratégico com sua visão sobre qualidade nesta plataforma:
-
-- **Análise de risco:** quais funcionalidades representam maior risco para o negócio e por quê
-- **Pirâmide de testes:** como você estruturaria os tipos de teste nessa stack (unitário, integração, E2E, contrato)
-- **Processo:** o que você mudaria no processo de desenvolvimento para antecipar problemas de qualidade nas próximas features
-
-> **Dica:** Não se limite à interface. Teste os contratos de API diretamente, inspecione o console do browser, avalie mensagens de erro e comportamentos de borda. Conecte o que encontrar na aplicação com o que você identificou no PRD na Fase 1.
-
----
-
-## Fase 3 — Suíte de Testes E2E com Playwright (45% da avaliação)
-
-Construa uma suíte de testes automatizados E2E utilizando **Playwright + TypeScript** para cobrir os fluxos críticos da aplicação.
-
-### Requisitos obrigatórios
-
-- [ ] Configurar o projeto Playwright dentro de um diretório \`e2e/\` na raiz do repositório
-- [ ] Implementar o padrão **Page Object Model (POM)**
-- [ ] Cobrir os seguintes fluxos críticos:
-  - **Criação de tarefa** — incluindo validação de campos (edge cases)
-  - **Conclusão e desconclusão** — toggle de status e verificação de persistência após reload de página
-  - **Exclusão** — remoção e confirmação de ausência na lista
-  - **Estado vazio** — comportamento da UI quando não há tarefas
-  - **Erro de API** — UX quando a API retorna erro (simule via \`page.route()\`)
-- [ ] Testes **determinísticos** — cada teste cria e limpa seu próprio estado, sem depender de dados pré-existentes
-- [ ] Selectors estáveis — priorize \`data-testid\`, \`role\` e \`aria-label\` sobre classes CSS ou XPath
-
-### Requisitos de qualidade do código
-
-- \`playwright.config.ts\` configurado com \`baseURL\`, \`retries\`, \`screenshot: 'only-on-failure'\`
-- Estrutura de pastas clara e escalável
-- TypeScript com tipagem forte
-- \`README.md\` dentro de \`e2e/\` com instruções de execução
-
-### Estrutura de pastas esperada
-
-\`\`\`
-e2e/
-pages/
-TaskListPage.ts
-TaskFormPage.ts
-AiGeneratorPage.ts
-fixtures/
-tasks.fixture.ts
-tests/
-task-creation.spec.ts
-task-completion.spec.ts
-task-deletion.spec.ts
-empty-state.spec.ts
-error-handling.spec.ts
-playwright.config.ts
-package.json
-README.md
-\`\`\`
-
-### Comandos que o avaliador vai executar
-
-\`\`\`bash
+```bash
 cd e2e
 npm install
+npx playwright install chromium
 npx playwright test
+```
+
+### Comandos úteis
+
+```bash
+# Rodar com browser visível
+npx playwright test --headed
+
+# Rodar um spec específico
+npx playwright test tests/task-creation.spec.ts
+
+# Rodar com interface visual do Playwright
+npx playwright test --ui
+
+# Ver relatório HTML após execução
 npx playwright show-report
-\`\`\`
+```
+
+### Resultado esperado
+
+```
+31 passed (35s)
+```
+
+> **Nota:** Os testes 16 e 17 (`task-completion.spec.ts`) usam `test.fail()` — isso é intencional. Eles documentam um bug conhecido onde o `toggleComplete` não persiste o estado no banco de dados (a chamada `PATCH /tasks/:id` está ausente no hook `useTasks.ts`). O `test.fail()` indica que o teste **deve** falhar enquanto o bug existir — se passar, significa que o bug foi corrigido.
 
 ---
 
-## Bônus (diferencial)
+## Resumo das fases
 
-Estes itens **não são obrigatórios**, mas serão fortemente valorizados:
+### Fase 1 — Revisão de PRD (`PRD-REVIEW.md`)
 
-#### B1 — Testes de API
+Análise realizada **antes** de interagir com a aplicação, simulando o processo real de shift-left QA. Foram identificados **12 problemas** distribuídos entre:
 
-Usando Playwright \`request\` context ou outro framework, implemente testes de contrato cobrindo:
+| Categoria | Qtd |
+|---|---|
+| Requisito ausente | 4 |
+| Critério de aceitação incompleto | 3 |
+| Segurança | 2 |
+| Ambiguidade | 2 |
+| Acessibilidade | 1 |
 
-- Status codes corretos para cada operação
-- Schema de resposta (campos obrigatórios, tipos de dados)
-- Casos de borda (payload inválido, ID inexistente, campo ausente)
+Destaques: ausência de requisitos de segurança para a API Key (risco financeiro direto), falta de especificação do formato de resposta da IA, e divergência entre o modelo documentado no PRD (`mistral-7b`) e o modelo em uso (`gemma-3-4b-it`) detectada via histórico de commits.
 
-#### B2 — CI com GitHub Actions
+### Fase 2 — Auditoria da Aplicação (`BUG-REPORT.md` + `TEST-STRATEGY.md`)
 
-Configure \`.github/workflows/e2e.yml\` que:
+Sessão de testes exploratórios cobrindo UI, API (Swagger), console do browser e casos de borda. Foram documentados **12 bugs**, incluindo:
 
-- Execute a suíte E2E em pull requests
-- Publique o relatório HTML do Playwright como artefato do workflow
+- **BUG-003 (Crítica/P1):** Erro 500 na segunda geração por IA não exibe nenhum feedback ao usuário — confirmado via DevTools com evidência de screenshot
+- **BUG-005 (Alta/P2):** Ausência de loading indicator durante geração por IA — regressão direta do RF-05 do PRD
+- **BUG-006 (Média/P3):** `PATCH /tasks/{id}` aceita campo `title` — funcionalidade explicitamente fora do escopo da v1.0
 
-#### B3 — Acessibilidade
+O `TEST-STRATEGY.md` conecta os riscos do PRD-REVIEW com os bugs encontrados, e propõe uma pirâmide de testes específica para a stack NestJS + Next.js com estratégias de mock para o serviço de IA.
 
-Usando \`@axe-core/playwright\` ou equivalente, documente pelo menos 3 problemas de acessibilidade encontrados na aplicação.
+### Fase 3 — Suíte Playwright E2E (`e2e/`)
 
----
+**31 testes** cobrindo os 5 fluxos críticos obrigatórios:
 
-## Critérios de Avaliação
+| Spec | Testes | Fluxo |
+|---|---|---|
+| `task-creation.spec.ts` | 8 | Criação manual + edge cases de validação |
+| `task-completion.spec.ts` | 6 | Toggle conclusão/desconclusão + persistência |
+| `task-deletion.spec.ts` | 5 | Exclusão e confirmação de ausência |
+| `empty-state.spec.ts` | 6 | Comportamento da UI com lista vazia |
+| `error-handling.spec.ts` | 6 | UX em cenários de erro via `page.route()` |
 
-### Fase 1 — Revisão de PRD (25%)
+**Decisões técnicas:**
 
-| Critério                                                                    | Peso |
-| --------------------------------------------------------------------------- | ---- |
-| Cobertura de problemas identificados (quantidade e variedade de categorias) | 40%  |
-| Qualidade da análise (risco justificado, não apenas "falta detalhes")       | 35%  |
-| Qualidade das sugestões de melhoria                                         | 25%  |
-
-### Fase 2 — Auditoria da Aplicação (30%)
-
-| Critério                                                           | Peso |
-| ------------------------------------------------------------------ | ---- |
-| Cobertura de defeitos encontrados                                  | 35%  |
-| Qualidade dos bug reports (clareza, reprodutibilidade, evidências) | 30%  |
-| Classificação adequada de severidade e prioridade                  | 15%  |
-| Profundidade estratégica no TEST-STRATEGY.md                       | 20%  |
-
-### Fase 3 — Suíte Playwright (45%)
-
-| Critério                                           | Peso |
-| -------------------------------------------------- | ---- |
-| Cobertura dos fluxos críticos obrigatórios         | 30%  |
-| Arquitetura (POM, fixtures, organização de pastas) | 25%  |
-| Qualidade e estabilidade dos selectors             | 20%  |
-| Código limpo, tipado e idiomático em TypeScript    | 15%  |
-| Documentação e facilidade de execução              | 10%  |
+- **Fixtures via API REST:** dados criados via `POST /tasks` direto na API (não via UI) para velocidade e determinismo — cada teste é completamente isolado com `beforeEach`/`afterEach` que limpam o banco
+- **Seletores por `data-testid`:** todos os seletores usam atributos `data-testid` já presentes no código-fonte da aplicação — zero seletores por classe CSS ou XPath
+- **`test.fail()` para bugs conhecidos:** testes de persistência documentam o bug do `toggleComplete` sem bloquear a suíte — abordagem preferível a comentar ou pular os testes
+- **pnpm:** gerenciador de pacotes mais eficiente que npm, compatível com o ambiente de avaliação via `npm install` conforme instruções
 
 ---
 
-## Estrutura de entrega esperada
+## Bônus implementados
 
-\`\`\`
-repositório/
-app/ ← aplicação (não modificar)
-e2e/ ← Fase 3: suíte Playwright
-pages/
-fixtures/
-tests/
-playwright.config.ts
-package.json
-README.md
-PRD.md ← fornecido (não modificar)
-PRD-REVIEW.md ← Fase 1: sua entrega
-BUG-REPORT.md ← Fase 2: sua entrega
-TEST-STRATEGY.md ← Fase 2: sua entrega
-README.md ← como rodar a app e os testes
-\`\`\`
+### B2 — CI com GitHub Actions
+
+O workflow `.github/workflows/playwright.yml` executa automaticamente em cada push e pull request:
+
+1. Sobe a aplicação via `docker compose`
+2. Aguarda os serviços estarem disponíveis (`wait-on`)
+3. Instala dependências e browsers do Playwright
+4. Executa a suíte completa
+5. Publica o relatório HTML como artefato (30 dias de retenção)
+
+**Status do último run:** Success — 2m 52s
 
 ---
 
-## Prazo e Entrega
+## Observações finais
 
-- **Prazo:** 5 dias corridos a partir do recebimento deste desafio
-- **Entrega:** Repositório público no GitHub (ou privado com acesso ao avaliador)
+Dois pontos merecem destaque pela transparência recomendada no desafio:
 
----
+**1. Bug de persistência do toggle (testes 16 e 17):** O `useTasks.ts` atualiza apenas o estado React local no `toggleComplete` sem chamar `PATCH /tasks/:id`. Os testes de persistência detectam corretamente esse bug e estão marcados com `test.fail()`. Quando o bug for corrigido, basta remover o `test.fail()` e os testes passarão normalmente.
 
-## Mensagem Final
-
-Na Sinky, valorizamos **clareza de raciocínio** tanto quanto capacidade técnica. Se você tomou uma decisão de arquitetura por limitação de tempo, encontrou um defeito mas não conseguiu reproduzi-lo de forma consistente, ou identificou um risco no PRD mas não tem certeza do impacto — **documente isso**. Queremos entender como você pensa, prioriza e comunica.
-
-Boa sorte.
+**2. Modelo de IA divergente:** O PRD documenta `mistralai/mistral-7b-instruct:free` mas a aplicação usa `gemma-3-4b-it:free` (trocado por indisponibilidade conforme commit `fc8c933`). Os testes de erro da IA foram implementados via `page.route()` para serem agnósticos ao modelo — funcionam independentemente de qual modelo estiver em uso.
