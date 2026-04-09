@@ -2,6 +2,7 @@
 
 **Candidato:** Rafael Barbosa  
 **Data de entrega:** 2026-04-13
+
 **Repositório:** https://github.com/DevWide/technical-challenge-qa-engineer
 
 ---
