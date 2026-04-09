@@ -52,7 +52,10 @@ A feature de geração por IA requer uma API Key gratuita do OpenRouter. Crie um
 
 ## Como rodar os testes E2E
 
-**Pré-requisitos:** aplicação rodando (passo acima) e Node.js 18+
+> ATENÇÃO: **A aplicação deve estar rodando antes de executar os testes.**  
+> Siga a seção "Como rodar a aplicação" acima e aguarde os containers estarem ativos antes de prosseguir.
+
+**Pré-requisitos:** Docker rodando com os containers ativos + Node.js 18+
 
 ```bash
 cd e2e
